@@ -4,6 +4,7 @@
 #define KEYPAD 1 // Keypad layer
 #define _PROGRAM 2 // Program layer
 
+#define LED_KEYPAD LINE_PIN24
 
 /****************************************************************************************************
 *
@@ -135,6 +136,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 };
 
+void keyboard_pre_init_user(void) {
+  // Set our LED pins as output.
+  setPinOutput(LED_KEYPAD);
+}
+
 void matrix_init_user(void) {
 
 }
@@ -149,4 +155,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
 void led_set_user(uint8_t usb_led) {
 
+}
+
+layer_state_t layer_state_set_user(layer_state_t state) {
+    writePin(LED_KEYPAD, !layer_state_cmp(state, KEYPAD));
+    return state;
 }
