@@ -64,7 +64,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                            KC_LCTL,KC_LALT,
                                     KC_HOME,
                            KC_BSPC,KC_DEL ,KC_END ,
-    KC_F9  ,KC_F10 ,KC_F11 ,KC_F12 ,KC_PSCR ,KC_SLCK  ,KC_PAUS, TG(KEYPAD), RESET,
+        KC_F9  ,KC_F10 ,KC_F11 ,KC_F12 ,KC_PSCR ,KC_SLCK  ,KC_PAUS, TT(KEYPAD), RESET,
         KC_6   ,KC_7   ,KC_8   ,KC_9   ,KC_0   ,KC_MINS,
         KC_Y   ,KC_U   ,KC_I   ,KC_O   ,KC_P   ,KC_BSLS,
         KC_H   ,KC_J   ,KC_K   ,KC_L   ,KC_SCLN,KC_QUOT,
@@ -89,7 +89,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
            _______, _______, _______,
 
            // Right Hand
-           _______, _______, _______, _______, KC_AUDIO_MUTE, KC_AUDIO_VOL_DOWN, KC_AUDIO_VOL_UP, TG(KEYPAD), _______,
+           _______, _______, _______, _______, KC_AUDIO_MUTE, KC_AUDIO_VOL_DOWN, KC_AUDIO_VOL_UP, _______, _______,
            _______, KC_NLCK, KC_PEQL, KC_PSLS, KC_PAST, _______,
            _______, KC_P7,   KC_P8,   KC_P9,   KC_PMNS, _______,
            _______, KC_P4,   KC_P5,   KC_P6,   KC_PPLS, _______,

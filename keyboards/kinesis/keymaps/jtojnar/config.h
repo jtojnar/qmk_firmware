@@ -1,3 +1,4 @@
 #pragma once
 
-// place overrides here
+// Make keypad button work as both a modifier and single-tap toggle button.
+#define TAPPING_TOGGLE 1
