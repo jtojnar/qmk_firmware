@@ -24,7 +24,8 @@
 *          | `~   | INS  | Left | Right|                                         | Up   | Down |  [{  |  ]}  |
 *          `---------------------------'                                         `---------------------------'
 *                                        ,-------------.         ,-------------.
-*                                        | Ctrl | Alt  |         | Gui  | Ctrl |
+*                                        | Ctrl | Alt  |         | Gui  |Alt Gr|
+*                                        |      |      |         |      | Menu |
 *                                 ,------|------|------|         |------+------+------.
 *                                 |      |      | Home |         | PgUp |      |      |
 *                                 | BkSp | Del  |------|         |------|Return| Space|
@@ -47,6 +48,7 @@
 *          |      | INS  | Left | Right|                                         | Up   | Down | KP . |KP Ent|
 *          `---------------------------'                                         `---------------------------'
 *                                        ,-------------.         ,-------------.
+*                                        |      |      |         |      |      |
 *                                        |      |      |         |      |      |
 *                                 ,------|------|------|         |------+------+------.
 *                                 |      |      |      |         |      |      |      |
@@ -78,7 +80,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_H   ,KC_J   ,KC_K   ,KC_L   ,KC_SCLN,KC_QUOT,
         KC_N   ,KC_M   ,KC_COMM,KC_DOT ,KC_SLSH,KC_RSFT,
                 KC_UP  ,KC_DOWN,KC_LBRC,KC_RBRC,
-           KC_LGUI,KC_RALT,
+           KC_LGUI,MT(MOD_RALT, KC_APP),
            KC_PGUP,
            KC_PGDN,KC_ENTER ,KC_SPC
     ),
