@@ -106,7 +106,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_MAKE, _________________ADJUST_L1_________________, _________________ADJUST_R1_________________, KC_RST,
     VRSN,    _________________ADJUST_L2_________________, _________________ADJUST_R2_________________, EEP_RST,
     TH_LVL,  _________________ADJUST_L3_________________, _________________ADJUST_R3_________________, RGB_IDL,
-    HPT_TOG, _______, _______, _______, _______, KC_NUKE, _______, _______, _______, _______, _______, TG_MODS
+    KEYLOCK, _______, _______, REBOOT,  _______, KC_NUKE, _______, _______, AUTO_CTN,_______, _______, TG_MODS
   )
 
 };
@@ -201,80 +201,30 @@ led_config_t g_led_config = {
 // clange-format on
 #    endif
 
-// clang-format off
-void suspend_power_down_keymap(void) {
-    rgb_matrix_set_suspend_state(true);
-}
 
-void suspend_wakeup_init_keymap(void) {
-    rgb_matrix_set_suspend_state(false);
-}
-// clang-format on
-
-void rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
+bool rgb_matrix_indicators_advanced_keymap(uint8_t led_min, uint8_t led_max) {
     uint8_t this_mod = get_mods();
     uint8_t this_led = host_keyboard_leds();
     uint8_t this_osm = get_oneshot_mods();
-    bool    is_ez;
 #    ifdef KEYBOARD_planck_ez
-    is_ez = true;
-#    endif
-
-#    if defined(RGBLIGHT_ENABLE)
-    if (!userspace_config.rgb_layer_change)
+#        define THUMB_LED 41
 #    else
-    if (userspace_config.rgb_layer_change)
+#        define THUMB_LED 42
 #    endif
-    {
-        switch (get_highest_layer(layer_state)) {
-            case _GAMEPAD:
-                rgb_matrix_layer_helper(HSV_ORANGE, 1, rgb_matrix_config.speed, LED_FLAG_MODIFIER, led_min, led_max);
-                break;
-            case _DIABLO:
-                rgb_matrix_layer_helper(HSV_RED, 1, rgb_matrix_config.speed * 8, LED_FLAG_MODIFIER, led_min, led_max);
-                break;
-            case _RAISE:
-                rgb_matrix_layer_helper(HSV_YELLOW, 1, rgb_matrix_config.speed, LED_FLAG_MODIFIER, led_min, led_max);
-                break;
-            case _LOWER:
-                rgb_matrix_layer_helper(HSV_GREEN, 1, rgb_matrix_config.speed, LED_FLAG_MODIFIER, led_min, led_max);
-                break;
-            case _ADJUST:
-                rgb_matrix_layer_helper(HSV_RED, 1, rgb_matrix_config.speed, LED_FLAG_MODIFIER, led_min, led_max);
-                break;
-            default:
-                {
-                    switch (get_highest_layer(default_layer_state)) {
-                        case _DEFAULT_LAYER_1:
-                            rgb_matrix_layer_helper(DEFAULT_LAYER_1_HSV, 0, rgb_matrix_config.speed, LED_FLAG_MODIFIER, led_min, led_max);
-                            break;
-                        case _DEFAULT_LAYER_2:
-                            rgb_matrix_layer_helper(DEFAULT_LAYER_2_HSV, 0, rgb_matrix_config.speed, LED_FLAG_MODIFIER, led_min, led_max);
-                            break;
-                        case _DEFAULT_LAYER_3:
-                            rgb_matrix_layer_helper(DEFAULT_LAYER_3_HSV, 0, rgb_matrix_config.speed, LED_FLAG_MODIFIER, led_min, led_max);
-                            break;
-                        case _DEFAULT_LAYER_4:
-                            rgb_matrix_layer_helper(DEFAULT_LAYER_4_HSV, 0, rgb_matrix_config.speed, LED_FLAG_MODIFIER, led_min, led_max);
-                            break;
-                    }
-                    break;
-                }
-        }
-    }
+#    define RGB_MATRIX_INDICATOR_SET_COLOR_wrapper(...) RGB_MATRIX_INDICATOR_SET_COLOR(__VA_ARGS__)
 
     switch (get_highest_layer(default_layer_state)) {
         case _DEFAULT_LAYER_1:
-            RGB_MATRIX_INDICATOR_SET_COLOR((is_ez ? 41 : 42), 0x00, 0xFF, 0xFF);
+            RGB_MATRIX_INDICATOR_SET_COLOR_wrapper(THUMB_LED, DEFAULT_LAYER_1_RGB);
             break;
         case _DEFAULT_LAYER_2:
-            RGB_MATRIX_INDICATOR_SET_COLOR((is_ez ? 41 : 42), 0xFF, 0x00, 0xFF);
+            RGB_MATRIX_INDICATOR_SET_COLOR_wrapper(THUMB_LED, DEFAULT_LAYER_2_RGB);
             break;
         case _DEFAULT_LAYER_3:
-            RGB_MATRIX_INDICATOR_SET_COLOR((is_ez ? 41 : 42), 0x00, 0xFF, 0x00);
+            RGB_MATRIX_INDICATOR_SET_COLOR_wrapper(THUMB_LED, DEFAULT_LAYER_3_RGB);
             break;
         case _DEFAULT_LAYER_4:
-            RGB_MATRIX_INDICATOR_SET_COLOR((is_ez ? 41 : 42), 0xD9, 0xA5, 0x21);
+            RGB_MATRIX_INDICATOR_SET_COLOR_wrapper(THUMB_LED, DEFAULT_LAYER_4_RGB);
             break;
     }
 
@@ -295,6 +245,8 @@ void rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
     if ((this_mod | this_osm) & MOD_MASK_ALT) {
         RGB_MATRIX_INDICATOR_SET_COLOR(38, 0x00, 0x00, 0xFF);
     }
+
+    return true;
 }
 
 void matrix_init_keymap(void) {

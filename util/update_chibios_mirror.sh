@@ -4,13 +4,13 @@
 # Configuration
 
 # The ChibiOS branches to mirror
-chibios_branches="trunk stable_20.3.x stable_21.6.x"
+chibios_branches="trunk stable_20.3.x stable_21.11.x"
 
 # The ChibiOS tags to mirror
-chibios_tags="ver20.3.1 ver20.3.2 ver20.3.3 ver21.6.0"
+chibios_tags="ver20.3.1 ver20.3.2 ver20.3.3 ver20.3.4 ver21.11.1"
 
 # The ChibiOS-Contrib branches to mirror
-contrib_branches="master chibios-20.3.x"
+contrib_branches="chibios-20.3.x chibios-21.11.x"
 
 ################################
 # Actions
@@ -37,6 +37,9 @@ fi
 
 if [[ -z "$(cat "$chibios_git_config" | grep '\[remote "qmk"\]')" ]] ; then
     git remote add qmk git@github.com:qmk/ChibiOS.git
+    git remote set-url qmk git@github.com:qmk/ChibiOS.git --push
+else
+    git remote set-url qmk git@github.com:qmk/ChibiOS.git
     git remote set-url qmk git@github.com:qmk/ChibiOS.git --push
 fi
 
@@ -65,10 +68,16 @@ cd "$contrib_dir"
 if [[ -z "$(cat "$contrib_git_config" | grep '\[remote "qmk"\]')" ]] ; then
     git remote add qmk git@github.com:qmk/ChibiOS-Contrib.git
     git remote set-url qmk git@github.com:qmk/ChibiOS-Contrib.git --push
+else
+    git remote set-url qmk git@github.com:qmk/ChibiOS-Contrib.git
+    git remote set-url qmk git@github.com:qmk/ChibiOS-Contrib.git --push
 fi
 
 if [[ -z "$(cat "$contrib_git_config" | grep '\[remote "upstream"\]')" ]] ; then
     git remote add upstream git@github.com:ChibiOS/ChibiOS-Contrib.git
+    git remote set-url upstream git@github.com:ChibiOS/ChibiOS-Contrib.git --push
+else
+    git remote set-url upstream git@github.com:ChibiOS/ChibiOS-Contrib.git
     git remote set-url upstream git@github.com:ChibiOS/ChibiOS-Contrib.git --push
 fi
 
@@ -79,5 +88,5 @@ echo "Updating ChibiOS-Contrib branches..."
 for branch in $contrib_branches ; do
     echo "Creating branch 'mirror/$branch' from 'upstream/$branch'..."
     git branch -f mirror/$branch upstream/$branch \
-        && git push qmk mirror/$branch
+        && git push qmk mirror/$branch || true # Allow for nonexistent ChibiOS-Contrib branches -- they'll turn up eventually.
 done
